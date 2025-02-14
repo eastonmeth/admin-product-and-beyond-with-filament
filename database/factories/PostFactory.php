@@ -17,10 +17,12 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $imageId = fake()->numberBetween(1, 1084);
+
         return [
             'user_id' => User::factory(),
             'title' => fake()->sentence(),
-            'image_url' => fake()->imageUrl(),
+            'image_url' => "https://picsum.photos/id/{$imageId}/1200/800",
             'description' => fake()->paragraph(),
         ];
     }

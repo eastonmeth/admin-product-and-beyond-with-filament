@@ -23,9 +23,11 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $avatarId = fake()->numberBetween(1, 1084);
+
         return [
             'name' => fake()->name(),
-            'avatar_url' => fake()->imageUrl(500, 500, 'people'),
+            'avatar_url' => "https://picsum.photos/id/{$avatarId}/500/500",
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
