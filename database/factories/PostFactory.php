@@ -24,6 +24,7 @@ class PostFactory extends Factory
             'title' => fake()->sentence(),
             'image_url' => "https://picsum.photos/id/{$imageId}/1200/800",
             'description' => fake()->paragraph(),
+            'likes' => fake()->numberBetween(0, 1000),
         ];
     }
 }
