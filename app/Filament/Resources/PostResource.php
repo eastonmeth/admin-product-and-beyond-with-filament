@@ -41,15 +41,26 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('user.avatar_url')
+                    ->label('User Avatar')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
                     ->sortable(),
+                Tables\Columns\ImageColumn::make('image_url')
+                    ->label('Image'),
                 Tables\Columns\TextColumn::make('title')
+                    ->limit(30)
                     ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->color('gray')
+                    ->searchable()
+                    ->limit(40),
                 Tables\Columns\TextColumn::make('likes')
+                    ->badge()
+                    ->color('danger')
+                    ->icon('heroicon-c-heart')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image_url'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
