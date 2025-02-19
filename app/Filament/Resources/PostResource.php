@@ -2,16 +2,30 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PostResource\Pages;
+use App\Filament\Resources\PostResource\Pages\CreatePost;
+use App\Filament\Resources\PostResource\Pages\EditPost;
+use App\Filament\Resources\PostResource\Pages\ListPosts;
+use App\Filament\Resources\PostResource\Pages\ViewPost;
 use App\Models\Post;
-use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Infolists;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\TextEntry\TextEntrySize;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class PostResource extends Resource
@@ -26,16 +40,16 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
+                Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required(),
-                Forms\Components\TextInput::make('title')
+                TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\FileUpload::make('image_url')
+                FileUpload::make('image_url')
                     ->image()
                     ->required(),
-                Forms\Components\Textarea::make('description')
+                Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
             ]);
@@ -45,48 +59,48 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('user.avatar_url')
+                ImageColumn::make('user.avatar_url')
                     ->label('User Avatar')
                     ->circular(),
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image_url')
+                ImageColumn::make('image_url')
                     ->label('Image'),
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->limit(30)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->color('gray')
                     ->searchable()
                     ->limit(40),
-                Tables\Columns\TextColumn::make('likes')
+                TextColumn::make('likes')
                     ->badge()
                     ->color('danger')
                     ->icon('heroicon-c-heart')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('user')
+                SelectFilter::make('user')
                     ->relationship('user', 'name')
                     ->multiple()
                     ->preload(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                ViewAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -95,42 +109,42 @@ class PostResource extends Resource
     {
         return $infolist
             ->schema([
-                Infolists\Components\TextEntry::make('title')
+                TextEntry::make('title')
                     ->hiddenLabel()
                     ->size(TextEntrySize::Large)
                     ->weight(FontWeight::SemiBold),
-                Infolists\Components\ImageEntry::make('image_url')
+                ImageEntry::make('image_url')
                     ->height(300)
                     ->hiddenLabel()
                     ->columnSpanFull(),
-                Infolists\Components\TextEntry::make('description')
+                TextEntry::make('description')
                     ->hiddenLabel()
                     ->columnSpanFull(),
-                Infolists\Components\Section::make('Details')
+                Section::make('Details')
                     ->columns(3)
                     ->icon('heroicon-o-information-circle')
                     ->schema([
-                        Infolists\Components\TextEntry::make('likes')
+                        TextEntry::make('likes')
                             ->badge()
                             ->color('danger')
                             ->icon('heroicon-c-heart')
                             ->numeric(),
-                        Infolists\Components\TextEntry::make('created_at')
+                        TextEntry::make('created_at')
                             ->dateTime(),
-                        Infolists\Components\TextEntry::make('updated_at')
+                        TextEntry::make('updated_at')
                             ->dateTime(),
                     ]),
-                Infolists\Components\Section::make('User')
+                Section::make('User')
                     ->columns(3)
                     ->relationship('user')
                     ->icon('heroicon-o-user')
                     ->schema([
-                        Infolists\Components\ImageEntry::make('avatar_url')
+                        ImageEntry::make('avatar_url')
                             ->label('Avatar')
                             ->size(50)
                             ->circular(),
-                        Infolists\Components\TextEntry::make('name'),
-                        Infolists\Components\TextEntry::make('email'),
+                        TextEntry::make('name'),
+                        TextEntry::make('email'),
                     ]),
             ]);
     }
@@ -145,10 +159,10 @@ class PostResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPosts::route('/'),
-            'create' => Pages\CreatePost::route('/create'),
-            'view' => Pages\ViewPost::route('/{record}'),
-            'edit' => Pages\EditPost::route('/{record}/edit'),
+            'index' => ListPosts::route('/'),
+            'create' => CreatePost::route('/create'),
+            'view' => ViewPost::route('/{record}'),
+            'edit' => EditPost::route('/{record}/edit'),
         ];
     }
 }
