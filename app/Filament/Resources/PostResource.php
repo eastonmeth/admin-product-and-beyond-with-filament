@@ -73,7 +73,8 @@ class PostResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('user')
-                    ->relationship('user', 'name'),
+                    ->relationship('user', 'name')
+                    ->multiple(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
