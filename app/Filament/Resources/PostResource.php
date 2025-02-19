@@ -27,6 +27,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Str;
 
 class PostResource extends Resource
 {
@@ -63,16 +64,15 @@ class PostResource extends Resource
                     ->label('User Avatar')
                     ->circular(),
                 TextColumn::make('user.name')
+                    ->weight(FontWeight::Bold)
                     ->sortable(),
                 ImageColumn::make('image_url')
                     ->label('Image'),
                 TextColumn::make('title')
-                    ->limit(30)
+                    ->label('Content')
+                    ->description(fn (Post $record): string => Str::limit($record->description, 60))
+                    ->limit(60)
                     ->searchable(),
-                TextColumn::make('description')
-                    ->color('gray')
-                    ->searchable()
-                    ->limit(40),
                 TextColumn::make('likes')
                     ->badge()
                     ->color('danger')
@@ -114,8 +114,9 @@ class PostResource extends Resource
                     ->size(TextEntrySize::Large)
                     ->weight(FontWeight::SemiBold),
                 ImageEntry::make('image_url')
-                    ->height(300)
+                    ->alignCenter()
                     ->hiddenLabel()
+                    ->height(300)
                     ->columnSpanFull(),
                 TextEntry::make('description')
                     ->hiddenLabel()
