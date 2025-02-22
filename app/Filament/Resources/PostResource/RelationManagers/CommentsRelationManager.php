@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\PostResource\RelationManagers;
 
+use App\Filament\Resources\UserResource;
+use App\Models\Comment;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -35,10 +37,12 @@ class CommentsRelationManager extends RelationManager
             ->columns([
                 ImageColumn::make('user.avatar_url')
                     ->label('User Avatar')
-                    ->circular(),
+                    ->circular()
+                    ->url(fn (Comment $record): string => UserResource::getUrl('view', ['record' => $record->user_id])),
                 TextColumn::make('user.name')
                     ->weight(FontWeight::Bold)
-                    ->sortable(),
+                    ->sortable()
+                    ->url(fn (Comment $record): string => UserResource::getUrl('view', ['record' => $record->user_id])),
                 TextColumn::make('content'),
             ])
             ->filters([

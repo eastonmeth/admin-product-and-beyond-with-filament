@@ -142,8 +142,10 @@ class PostResource extends Resource
                         ImageEntry::make('avatar_url')
                             ->label('Avatar')
                             ->size(50)
-                            ->circular(),
-                        TextEntry::make('name'),
+                            ->circular()
+                            ->url(fn (Post $record): string => UserResource::getUrl('view', ['record' => $record->user_id])),
+                        TextEntry::make('name')
+                            ->url(fn (Post $record): string => UserResource::getUrl('view', ['record' => $record->user_id])),
                         TextEntry::make('email'),
                     ]),
             ]);
