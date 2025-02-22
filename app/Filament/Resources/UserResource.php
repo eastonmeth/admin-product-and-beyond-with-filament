@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Filament\Resources\UserResource\Pages\ViewUser;
+use App\Filament\Resources\UserResource\RelationManagers\PostsRelationManager;
 use App\Models\User;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\ImageEntry;
@@ -97,7 +98,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PostsRelationManager::class,
         ];
     }
 
