@@ -13,6 +13,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Actions\Action;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -138,14 +139,16 @@ class PostResource extends Resource
                     ->columns(3)
                     ->relationship('user')
                     ->icon('heroicon-o-user')
+                    ->headerActions([
+                        Action::make('view')
+                            ->url(fn (Post $record): string => UserResource::getUrl('view', ['record' => $record->user_id])),
+                    ])
                     ->schema([
                         ImageEntry::make('avatar_url')
                             ->label('Avatar')
                             ->size(50)
-                            ->circular()
-                            ->url(fn (Post $record): string => UserResource::getUrl('view', ['record' => $record->user_id])),
-                        TextEntry::make('name')
-                            ->url(fn (Post $record): string => UserResource::getUrl('view', ['record' => $record->user_id])),
+                            ->circular(),
+                        TextEntry::make('name'),
                         TextEntry::make('email'),
                     ]),
             ]);
