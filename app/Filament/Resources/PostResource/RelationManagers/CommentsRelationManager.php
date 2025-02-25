@@ -49,7 +49,7 @@ class CommentsRelationManager extends RelationManager
                     ->weight(FontWeight::Bold)
                     ->sortable(),
                 TextColumn::make('content')
-                    ->limit(100),
+                    ->limit(80),
             ])
             ->filters([
                 //
