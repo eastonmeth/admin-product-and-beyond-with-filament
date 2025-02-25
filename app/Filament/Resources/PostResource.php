@@ -9,7 +9,6 @@ use App\Filament\Resources\PostResource\Pages\ViewPost;
 use App\Filament\Resources\PostResource\RelationManagers\CommentsRelationManager;
 use App\Models\Post;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -40,14 +39,13 @@ class PostResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(1)
             ->schema([
-                Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255),
                 FileUpload::make('image_url')
+                    ->label('Image')
                     ->image()
                     ->required(),
                 Textarea::make('description')
