@@ -4,8 +4,8 @@ namespace App\Filament\Resources\PostResource\Pages;
 
 use App\Filament\Resources\PostResource;
 use App\Models\Post;
-use Filament\Actions;
 use Filament\Actions\Action;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewPost extends ViewRecord
@@ -22,7 +22,7 @@ class ViewPost extends ViewRecord
                     $record->likes++;
                     $record->save();
                 }),
-            Actions\EditAction::make(),
+            EditAction::make(),
         ];
     }
 }
