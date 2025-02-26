@@ -70,7 +70,7 @@ class PostResource extends Resource
                     ->label('Content')
                     ->description(fn (Post $record): string => Str::limit($record->description, 60))
                     ->limit(60)
-                    ->searchable(),
+                    ->searchable(['title', 'description']),
                 TextColumn::make('likes')
                     ->badge()
                     ->color('danger')
