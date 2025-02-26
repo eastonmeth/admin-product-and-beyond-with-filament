@@ -22,7 +22,8 @@ class ViewPost extends ViewRecord
                     $record->likes++;
                     $record->save();
                 }),
-            EditAction::make(),
+            EditAction::make()
+                ->visible(fn (Post $record): bool => $record->user_id === auth()->id()),
         ];
     }
 }

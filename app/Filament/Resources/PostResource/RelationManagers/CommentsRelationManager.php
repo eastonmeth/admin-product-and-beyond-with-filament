@@ -64,8 +64,10 @@ class CommentsRelationManager extends RelationManager
             ])
             ->actions([
                 ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                EditAction::make()
+                    ->visible(fn (Comment $record): bool => $record->user_id === auth()->id()),
+                DeleteAction::make()
+                    ->visible(fn (Comment $record): bool => $record->post->user_id === auth()->id()),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
