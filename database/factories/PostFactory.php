@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PostStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,6 +26,7 @@ class PostFactory extends Factory
             'image_url' => "https://picsum.photos/id/{$imageId}/1200/800",
             'description' => fake()->paragraph(),
             'likes' => fake()->numberBetween(0, 1000),
+            'status' => fake()->randomElement(PostStatus::cases()),
         ];
     }
 }

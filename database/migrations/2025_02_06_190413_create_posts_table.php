@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('image_url');
             $table->text('description');
             $table->integer('likes')->default(0);
+            $table->string('status')->default('IN_REVIEW');
             $table->timestamps();
         });
     }
