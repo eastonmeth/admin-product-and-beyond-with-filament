@@ -76,6 +76,9 @@ class PostResource extends Resource
                     ->icon('heroicon-c-heart')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('status')
+                    ->badge()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
