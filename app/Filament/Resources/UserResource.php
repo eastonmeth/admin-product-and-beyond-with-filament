@@ -25,6 +25,8 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function table(Table $table): Table
     {
         return $table
