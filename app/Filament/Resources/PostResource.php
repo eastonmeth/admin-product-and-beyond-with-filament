@@ -9,6 +9,11 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Actions\Action;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -98,6 +103,53 @@ class PostResource extends Resource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->columns(1)
+            ->schema([
+                TextEntry::make('title')
+                    ->weight(FontWeight::Bold)
+                    ->hiddenLabel(),
+                ImageEntry::make('image_url')
+                    ->hiddenLabel(),
+                TextEntry::make('description')
+                    ->hiddenLabel(),
+                Section::make('Details')
+                    ->columns(4)
+                    ->icon('heroicon-o-information-circle')
+                    ->schema([
+                        TextEntry::make('likes')
+                            ->badge()
+                            ->color('danger')
+                            ->icon('heroicon-c-heart')
+                            ->numeric(),
+                        TextEntry::make('status')
+                            ->badge(),
+                        TextEntry::make('created_at')
+                            ->dateTime(),
+                        TextEntry::make('updated_at')
+                            ->dateTime(),
+                    ]),
+                Section::make('User Details')
+                    ->relationship('user')
+                    ->columns(3)
+                    ->icon('heroicon-o-user')
+                    ->schema([
+                        ImageEntry::make('avatar_url')
+                            ->label('User Avatar')
+                            ->circular(),
+                        TextEntry::make('name')
+                            ->weight(FontWeight::Bold),
+                        TextEntry::make('email'),
+                    ])
+                    ->headerActions([
+                        Action::make('View')
+                            ->url(fn (Post $record): string => UserResource::getUrl('view', ['record' => $record->user_id])),
+                    ]),
             ]);
     }
 
