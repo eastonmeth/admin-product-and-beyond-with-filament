@@ -16,6 +16,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
@@ -98,6 +99,13 @@ class PostResource extends Resource
             ->actions([
                 ViewAction::make(),
                 EditAction::make(),
+                Action::make('Like')
+                    ->action(function (Post $record): void {
+                        $record->likes++;
+                        $record->save();
+                    })
+                    ->color('danger')
+                    ->icon('heroicon-c-heart'),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
